@@ -5,6 +5,7 @@ import random
 import sys
 
 def send_to_all_clients(message,client=None):
+    #Sends message to all clients
     encoded_message = bytes(message,'utf-8')
     for j in range(len(client_list)):
         try:
@@ -16,6 +17,7 @@ def send_to_all_clients(message,client=None):
             handle_disconnect(client_list[j])
 
 def handle_disconnect(client):
+    #Removes player from the lists
     global number_of_clients,client_names,client_addr,client_list
     for counter in range(number_of_clients):
         if client == client_list[counter]:
@@ -38,35 +40,37 @@ def handle_client(client):
         try:
             data = client.recv(1024)
             data = data.decode()
-            # if data[:2]=='/p':
-            #     d=d[3:]
-            #     print(d)
-            #     clients_pos[id] = d
-            # else:
+
             if data =='ready':
                 ready_players+=1
                 data = '/q*'+str(ready_players)+' of '+str(number_of_clients)
+                #if all players are ready
                 if ready_players==number_of_clients:
                     dead_players = 0
                     send_to_all_clients(data)
                     time.sleep(1)
+                    #Generates the pipe Y and sends them info
                     generate_pipes()
                     time.sleep(1)
-                    for i in range(4):
+                    #Sends timer info to players
+                    for i in range(3,0,-1):
                         data = '/q*' +str(i)
                         send_to_all_clients(data)
                         time.sleep(1)
                     game_state = '/s*play'
                     data = game_state
 
+            #Checks if someone died
             if data == 'dead':
                 dead_players+=1
+                #If all players are dead
                 if dead_players==number_of_clients:
                     time.sleep(2)
                     ready_players=0
                     game_state = '/s*q'
                     data = game_state
 
+            #When someone new connects
             if data[:3]=='/nc':
                 send_to_all_clients(data)
                 data = '/q*' + str(ready_players) + ' of ' + str(number_of_clients)
@@ -80,6 +84,7 @@ def handle_client(client):
             break
 
 def generate_pipes():
+    # Generates the pipe Y and sends them info
     msg='/p*'
     for i in range(10):
         msg+=str(random.randint(300,550))+'*'
@@ -112,19 +117,6 @@ def first_handle(con,addr):
     notify_text = '/nc*'+name+'*'
     send_to_all_clients(notify_text,client_list[number_of_clients])
 
-
-def sync_clients():
-    global counter
-    while True:
-        try:
-            for j in range(len(client_names)):
-                msg ='/p*'+client_names[j]+'*'+str(clients_pos[j])
-                send_to_all_clients(msg)
-        except:
-            print(sys.exc_info())
-
-        time.sleep(1)
-
 client_list = []
 client_addr = []
 client_names = []
@@ -150,8 +142,7 @@ while True:
     conn,addr = srv_socket.accept()
     print('[*] Client connected from: ',addr[0],':',addr[1],sep='')
     first_handle(conn,addr)
-    # sync_clients_thread = threading.Thread(target=sync_clients)
-    # sync_clients_thread.start()
+
 
 
 
