@@ -20,7 +20,7 @@ Every time a client gets information from the server it checks for a few command
 
 
 There could be a few improvements:
-1. *Server could constantly update clients about positions? (Right now it only updates when a client pressed space)
-2. *Better way to handle disconnects
-3. *Score system could be implemented
+1. Server could constantly update clients about positions? (Right now it only updates when a client pressed space)
+2. Better way to handle disconnects
+3. Score system could be implemented
 
