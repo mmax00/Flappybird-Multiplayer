@@ -4,9 +4,9 @@ Flappybird multiplayer game in python
 A game is made in python using pygame library and sockets.
 
 The way a server communicates with client:
-1. Client send server his name
-2. Server send client the state of a game (it can either be 'play' or 'q'-queue)
-3. Server send client info about the connected players
+1. Client sends server his name
+2. Server sends client the state of a game (it can either be 'play' or 'q'-queue)
+3. Server sends client info about the connected players
 Then server will start clients thread for the rest of communication
 
 
