@@ -1,6 +1,8 @@
 # Flappybird-Multiplayer
 Flappybird multiplayer game in python
 
+<img src="https://raw.githubusercontent.com/mmax00/Flappybird-Multiplayer/master/preview.gif" width="694" height="313" />
+
 A game is made in python using pygame library and sockets.
 
 The way a server communicates with client:
